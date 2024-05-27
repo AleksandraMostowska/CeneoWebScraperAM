@@ -1,5 +1,5 @@
 from app import app
-from flask import render_template, request, redirect, url_for
+from flask import render_template, request, redirect, url_for, send_file
 from bs4 import BeautifulSoup
 import pandas as pd
 import numpy as np
@@ -7,6 +7,7 @@ import requests
 import os
 import json
 from app import utils
+import io
 
 
 @app.route('/')
@@ -26,6 +27,7 @@ def extract():
             opinions_count = utils.extract(page_dom, "a.product-review__link > span")
 
             if opinions_count:
+                product_name = utils.extract(page_dom, "h1")
                 url = f"https://www.ceneo.pl/{product_id}/opinie-1"
                 all_opinions = []
                 while (url):
@@ -55,12 +57,13 @@ def extract():
 
                 stats = {
                     'product_id': product_id,
+                    'product_name': product_name,
                     'opinions_count': opinions.index.size,
-                    'pros_count': opinions.pros.apply(lambda p: 1 if p else 0).sum(),
-                    'cons_count': opinions.cons.apply(lambda c: 1 if c else 0).sum(),
+                    'pros_count': int(opinions.pros.apply(lambda p: 1 if p else 0).sum()),
+                    'cons_count': int(opinions.cons.apply(lambda c: 1 if c else 0).sum()),
                     'average_rating': opinions.rating.mean(),
-                    'rating_distribution': opinions.rating.value_counts().reindex(np.arange(0, 5.5, 0.5), fill_value=0),
-                    'recommendations_distribution': opinions.recommendation.value_counts().reindex(['Polecam', 'Nie polecam', 'Brak rekomendacji'])
+                    'rating_distribution': opinions.rating.value_counts().reindex(np.arange(0, 5.5, 0.5), fill_value=0).to_dict(),
+                    'recommendations_distribution': opinions.recommendation.value_counts().reindex(['Polecam', 'Nie polecam', 'Brak rekomendacji'], fill_value=0).to_dict()
                 }
 
                 if not os.path.exists("app/data/stats"):
@@ -77,7 +80,11 @@ def extract():
 
 @app.route('/products')
 def products():
-    products = [filename.split('.')[0] for filename in  os.listdir("app/data/opinions")]
+    products_list = [filename.split('.')[0] for filename in  os.listdir("app/data/opinions")]
+    products = []
+    for product_id in products_list:
+        with open(f"app/data/stats/{product_id}.json", "r", encoding="UTF-8") as jf:
+            products.append(json.load(jf))
     return render_template('products.html', products=products)
 
 @app.route('/author')
@@ -87,3 +94,18 @@ def author():
 @app.route('/product/<product_id>')
 def product(product_id):
     return render_template('product.html', product_id=product_id)
+
+@app.route('/product/download_json/<product_id>')
+def download_json(product_id):
+    return send_file(f'data/opinions/{product_id}.json', "text/json", as_attachment=True)
+
+@app.route('/product/download_csv/<product_id>')
+def download_csv(product_id):
+    opinions = pd.read_json(f"app/data/opinions/{product_id}.json")
+    buffer = io.BytesIO(opinions.to_csv(sep=';', decimal=',', index=False).encode())
+    return send_file(buffer, "text/csv", as_attachment=True, download_name=f"{product_id}.csv")
+
+@app.route('/product/download_xlsx/<product_id>')
+def download_xlsx(product_id):
+    pass
+# dataframe jako posrednik + trzeba uzyc writera, czyli funkcji ktory pomoze zapisac do pliku xlsx
