@@ -86,3 +86,19 @@ footer {
     box-shadow: 0px -6px 8px rgba(0, 0, 0, 0.1);
     text-shadow: 5px 6px 8px rgba(0, 0, 0, 0.1);
 }
+
+.custom-card {
+    background-color: rgb(255, 246, 250);
+}
+
+.custom-card-link {
+    color: rgb(222, 154, 178);
+}
+
+.custom-card-link:hover {
+    color: rgb(174, 89, 119);
+}
+
+.extra-margin-bottom {
+    margin-bottom: 70px; 
+}

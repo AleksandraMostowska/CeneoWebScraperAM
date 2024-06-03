@@ -3,6 +3,40 @@
 {% block title %}Lista produktów{% endblock %}
 
 {% block content %}
-    {{ products }}
-    <!-- <h2>Lista produktów</h2> -->
+<div class="container mt-5">
+    <div class="row">
+        {% for product in products %}
+            <div class="col-12 mb-4">
+                <div class="card custom-card">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <a href="{{ url_for('product', product_id=product['product_id']) }}" class="custom-card-link">
+                                {{ product['product_name'] }}
+                            </a>
+                        </h5>
+                        <p class="card-text">
+                            <strong>Id opinii:</strong> {{ product['product_id'] }}<br>
+                            <strong>Liczba opinii:</strong> {{ product['opinions_count'] }}<br>
+                            <strong>Liczba zalet:</strong> {{ product['pros_count'] }}<br>
+                            <strong>Liczba wad:</strong> {{ product['cons_count'] }}<br>
+                            <strong>Średnia ocena:</strong> {{ product['average_rating'] }}<br>
+                        </p>
+                        <p class="card-text">
+                            <strong>Rozkład ocen:</strong><br>
+                            {% for rating, count in product['rating_distribution'].items() %}
+                                {{ rating }}: {{ count }}<br>
+                            {% endfor %}
+                        </p>
+                        <p class="card-text">
+                            <strong>Rozkład rekomendacji:</strong><br>
+                            {% for recommendation, count in product['recommendations_distribution'].items() %}
+                                {{ recommendation }}: {{ count }}<br>
+                            {% endfor %}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
 {% endblock %}

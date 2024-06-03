@@ -3,5 +3,6 @@
 {% block title %}To jest strona z opiniamii o produkcie {{ product_id }}.{% endblock %}
 
 {% block content %}
-    <!-- <p>To jest strona z opiniamii o produkcie {{ product_id }}.</p> -->
+    <!-- <p>To jest stron a z opiniamii o produkcie {{ product_id }}.</p> -->
+    {{ opinions | safe }}
 {% endblock %}
