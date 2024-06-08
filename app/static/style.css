@@ -93,6 +93,8 @@ footer {
 
 .custom-card-link {
     color: rgb(222, 154, 178);
+    font-size: 26px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
 .custom-card-link:hover {
@@ -101,4 +103,57 @@ footer {
 
 .extra-margin-bottom {
     margin-bottom: 70px; 
+}
+
+/* .custom-btn-json {
+    /* background-color: rgb(222, 154, 178); */
+    /* color: white; */
+    /* color: rgb(222, 154, 178);
+    font-weight: bold;
+} */
+
+/* .custom-btn-csv { */
+    /* background-color: rgb(222, 154, 178); */
+    /* color: white; */
+    /* color: rgb(222, 154, 178);
+    font-weight: bold;
+} */
+
+/* .custom-btn-xlsx { */
+    /* background-color: rgb(222, 154, 178); */
+    /* color: white; */
+    /* color: rgb(222, 154, 178);
+    font-weight: bold;
+} */
+
+/* .custom-btn-json:hover {
+    background-color: rgb(174, 89, 119);
+    color: white;
+}
+
+.custom-btn-csv:hover {
+    background-color: rgb(174, 89, 119);
+    color: white;
+}
+
+.custom-btn-xlsx:hover {
+    background-color: rgb(174, 89, 119);
+    color: white;
+}  */
+
+.my-custom-outline {
+    color: rgb(222, 154, 178);
+    background-color: transparent;
+    background-image: none;
+    font-weight: bold;
+    border-color: rgb(222, 154, 178);
+    padding-left: 35px;
+    padding-right: 35px;
+}
+
+.my-custom-outline:hover {
+    background-color: rgb(174, 89, 119);
+    color: white;
+    font-weight: bold;
+    border-color: rgb(222, 154, 178)
 }

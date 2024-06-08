@@ -2,6 +2,9 @@ import os
 import json
 import requests
 from bs4 import BeautifulSoup
+import matplotlib.pyplot as plt
+import io
+import base64
 
 def extract(ancestor, selector=None, attribute=None, returns_list=False):
     if selector:
@@ -36,3 +39,4 @@ selectors = {
     'post_date' : ('span.user-post__published > time:nth-child(1)', "datetime"),
     'purchase_date' : ('span.user-post__published > time:nth-child(2)', "datetime")
 }
+

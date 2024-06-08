@@ -117,5 +117,10 @@ def download_csv(product_id):
 
 @app.route('/product/download_xlsx/<product_id>')
 def download_xlsx(product_id):
-    pass
+    opinions = pd.read_json(f"app/data/opinions/{product_id}.json")
+    buffer = io.BytesIO()
+    with pd.ExcelWriter(buffer, engine='xlsxwriter') as writer:
+        opinions.to_excel(writer, index=False, sheet_name='Opinions')
+    buffer.seek(0)
+    return send_file(buffer, as_attachment=True, download_name=f"{product_id}.xlsx", mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
 # dataframe jako posrednik + trzeba uzyc writera, czyli funkcji ktory pomoze zapisac do pliku xlsx
